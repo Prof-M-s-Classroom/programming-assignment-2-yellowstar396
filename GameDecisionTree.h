@@ -18,16 +18,17 @@ private:
     map<int,Node<Story*>* > eventMap;
 
 public:
-    // TODO: Constructor
+    //Constructor
     GameDecisionTree() : root(nullptr) {}
 
-    // TODO: Function to load story data from a text file and build the binary tree
+    //Function to load story data from a text file and build the binary tree
     //we will assume that the first action is always eventNumber=0
     void loadStoryFromFile(const std::string& filename, char delimiter) {
         getEventMap(filename, delimiter);
         loadStoryFromFileHelper(delimiter, 0);
     }
 
+    //A helper recursive function to create the decision tree from the map
     Node<Story*>* loadStoryFromFileHelper(char delimiter, int currentEventNumber) {
         //base case
         if (currentEventNumber==-1) {
@@ -42,6 +43,7 @@ public:
         return currentNode;
     }
 
+    //converts a given file to a map of Nodes of story objects
     void getEventMap(const string& fileName, char delimiter){
         ifstream file(fileName);
         if (!file) {
@@ -65,6 +67,7 @@ public:
         //return events;
     }
 
+    //coverts a line of string to a story object
     Story* stringToStory(string str, char delimiter) const {
         string parts[4];
         int currentPart = 0;
@@ -97,6 +100,7 @@ public:
         playEvent(root);
     }
 
+    //Reads the description of a specific event and asks for player input for the next event. Then repeats the process.
     void playEvent(Node<Story*>* currentNode) {
         if (currentNode == nullptr) {
             cout << "Game Over!" << endl;
@@ -106,6 +110,7 @@ public:
         playEvent(askForAction(currentNode));
     }
 
+    //Asks for player input for the next action to take
     Node<Story*>* askForAction(Node<Story*>* currentNode) {
         if (currentNode->data->leftEventNumber == -1 || currentNode->data->rightEventNumber == -1) {
             return nullptr;
